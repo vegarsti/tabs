@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/vegarsti/firefox-tabs/mozlz4"
+	"github.com/vegarsti/tabs/firefox"
 )
 
 func main() {
 	// Compress and uncompress an input string.
 	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "usage: %s [file]\n", "main")
+		fmt.Fprintf(os.Stderr, "usage: %s [mozlz4 file]\n", "main")
 		os.Exit(1)
 	}
 
@@ -19,9 +20,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "couldn't open file '%s': %v\n", os.Args[1], err)
 		os.Exit(1)
 	}
-
-	if err := mozlz4.Decompress(file, os.Stdout); err != nil {
-		fmt.Fprintf(os.Stderr, "decompress: %v\n", err)
-		os.Exit(1)
-	}
+	f := firefox.New(file)
+	tabs := f.Read()
+	log.Println(tabs)
 }
