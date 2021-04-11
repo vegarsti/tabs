@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/vegarsti/tabs/firefox"
@@ -20,7 +19,10 @@ func main() {
 		fmt.Fprintf(os.Stderr, "couldn't open file '%s': %v\n", os.Args[1], err)
 		os.Exit(1)
 	}
+
 	f := firefox.New(file)
-	tabs := f.Read()
-	log.Println(tabs)
+	if _, err := f.Read(); err != nil {
+		fmt.Fprintf(os.Stderr, "read: %v\n", err)
+		os.Exit(1)
+	}
 }

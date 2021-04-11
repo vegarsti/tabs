@@ -1,10 +1,13 @@
 package tabs
 
 type Tab struct {
-	URL   string `json:"originalURI"`
-	Title string `json:"title"`
+	URL          string
+	Title        string
+	LastAccessed int
+	WindowIndex  int
+	TabIndex     int
 }
 
-type Read interface {
-	Tabs() []Tab
+type Service interface {
+	Read() ([]Tab, error)
 }
