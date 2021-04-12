@@ -8,6 +8,6 @@ type Tab struct {
 	TabIndex     int
 }
 
-type Service interface {
-	Read() ([]Tab, error)
+type TabService interface {
+	ReadTabs() ([]Tab, error)
 }

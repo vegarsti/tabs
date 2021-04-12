@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/vegarsti/tabs"
 	"github.com/vegarsti/tabs/firefox"
 )
 
@@ -20,8 +21,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	f := firefox.New(file)
-	if _, err := f.Read(); err != nil {
+	var t tabs.TabService
+	t = firefox.NewTabService(file)
+	if _, err := t.ReadTabs(); err != nil {
 		fmt.Fprintf(os.Stderr, "read: %v\n", err)
 		os.Exit(1)
 	}
