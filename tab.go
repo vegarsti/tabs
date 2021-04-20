@@ -11,4 +11,5 @@ type Tab struct {
 type TabService interface {
 	ReadTabs() ([]Tab, error)
 	WriteTabs([]Tab) error
+	Close() error
 }
