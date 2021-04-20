@@ -14,8 +14,8 @@ type TabService struct {
 	file io.Reader
 }
 
-func NewTabService(r io.Reader) *TabService {
-	return &TabService{file: r}
+func NewTabService(r io.Reader) (*TabService, error) {
+	return &TabService{file: r}, nil
 }
 
 func (f *TabService) ReadTabs() ([]tabs.Tab, error) {
