@@ -35,3 +35,7 @@ func (s *TabService) ReadTabs() ([]tabs.Tab, error) {
 func (s *TabService) WriteTabs([]tabs.Tab) error {
 	return nil
 }
+
+func (s *TabService) Close() error {
+	return nil
+}

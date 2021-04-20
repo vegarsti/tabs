@@ -43,6 +43,14 @@ func (f *TabService) ReadTabs() ([]tabs.Tab, error) {
 	return tt, nil
 }
 
+func (f *TabService) WriteTabs([]tabs.Tab) error {
+	return nil
+}
+
+func (f *TabService) Close() error {
+	return nil
+}
+
 type Payload struct {
 	Windows []struct {
 		Tabs []struct {
