@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/vegarsti/tabs"
 	"github.com/vegarsti/tabs/firefox/mozlz4"
@@ -14,8 +15,12 @@ type TabService struct {
 	file io.Reader
 }
 
-func NewTabService(r io.Reader) (*TabService, error) {
-	return &TabService{file: r}, nil
+func NewTabService(s string) (*TabService, error) {
+	file, err := os.Open(s)
+	if err != nil {
+		return nil, fmt.Errorf("couldn't open file '%s': %w", s, err)
+	}
+	return &TabService{file: file}, nil
 }
 
 func (f *TabService) ReadTabs() ([]tabs.Tab, error) {
@@ -23,13 +28,14 @@ func (f *TabService) ReadTabs() ([]tabs.Tab, error) {
 	if err := mozlz4.Decompress(f.file, bs); err != nil {
 		return nil, fmt.Errorf("decompress: %w", err)
 	}
-	p := Payload{}
+	var p Payload
 	if err := json.Unmarshal(bs.Bytes(), &p); err != nil {
 		return nil, fmt.Errorf("unmarshal: %w", err)
 	}
 	tt := make([]tabs.Tab, 0)
 	for i, w := range p.Windows {
 		for j, t := range w.Tabs {
+			// last entry is the active page in this tab
 			current := t.Entries[len(t.Entries)-1]
 			tt = append(tt, tabs.Tab{
 				Title:        current.Title,
