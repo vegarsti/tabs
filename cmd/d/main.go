@@ -10,15 +10,19 @@ import (
 )
 
 func main() {
-	// Compress and uncompress an input string.
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "usage: %s [mozlz4 file]\n", "main")
+	firefoxPath := os.Getenv("FIREFOX_TABS_PATH")
+	if firefoxPath == "" {
+		fmt.Fprintln(os.Stderr, "set environment variable FIREFOX_TABS_PATH")
 		os.Exit(1)
 	}
-
-	file, err := os.Open(os.Args[1])
+	dbPath := os.Getenv("TABS_DB_PATH")
+	if dbPath == "" {
+		fmt.Fprintln(os.Stderr, "set environment variable TABS_DB_PATH")
+		os.Exit(1)
+	}
+	file, err := os.Open(firefoxPath)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "couldn't open file '%s': %v\n", os.Args[1], err)
+		fmt.Fprintf(os.Stderr, "couldn't open file '%s': %v\n", firefoxPath, err)
 		os.Exit(1)
 	}
 
@@ -35,7 +39,7 @@ func main() {
 		os.Exit(1)
 	}
 	t.Close()
-	t, err = sqlite.NewTabService("lol.db")
+	t, err = sqlite.NewTabService(dbPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "couldn't create sqlite tab service: %v\n", err)
 		os.Exit(1)

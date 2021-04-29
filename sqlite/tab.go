@@ -19,7 +19,7 @@ func NewTabService(file string) (*TabService, error) {
 	if err != nil {
 		return nil, fmt.Errorf("sqlite open '%s': %w", file, err)
 	}
-	migration := "DROP TABLE firefox; CREATE TABLE firefox (url text not null, at integer not null);"
+	migration := "DROP TABLE IF EXISTS firefox; CREATE TABLE firefox (url text not null, at integer not null);"
 	if _, err := db.Exec(migration); err != nil {
 		return nil, fmt.Errorf("migration: %w", err)
 	}
